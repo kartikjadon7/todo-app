@@ -6,3 +6,5 @@ build/
 coverage/
 logs/
 *.log
+package-lock.json
+package.json
