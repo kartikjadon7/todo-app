@@ -1,16 +1,16 @@
 import { useState } from "react";
-import API from "../services/api";
+import { createTodo } from "../services/api";
 
-const TodoForm = ({ fetchTodos }) => {
+function TodoForm({ fetchTodos }) {
   const [title, setTitle] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title) return;
 
-    await API.post("/todos", { title });
+    await createTodo({ title });
     setTitle("");
-    fetchTodos(); // 🔥 no reload
+    fetchTodos();
   };
 
   return (
@@ -21,9 +21,9 @@ const TodoForm = ({ fetchTodos }) => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <button>Add</button>
+      <button type="submit">Add</button>
     </form>
   );
-};
+}
 
 export default TodoForm;

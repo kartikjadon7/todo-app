@@ -1,21 +1,43 @@
 const express = require("express");
-const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-const todoRoutes = require("./routes/todo.routes");
-const errorHandler = require("./middleware/error.middleware");
-
-dotenv.config();
-connectDB();
-
 const app = express();
 
-// Middleware
-app.use(express.json());
+const cookieParser = require("cookie-parser");
+const todoRoutes = require("./routes/todo.routes");
 
-// Routes
+app.use(express.json());
+app.use(cookieParser());
+
+
+app.get("/set-cookie", (req, res) => {
+    res.cookie("name", "user-1");
+    res.send("Cookie set");
+});
+
+app.get("/get-cookie", (req, res) => {
+    res.json(req.cookies);
+});
+
+
 app.use("/api/todos", todoRoutes);
 
-// Error Middleware
-app.use(errorHandler);
+app.post("/login", (req, res) => {
+    const { username} = req.body;
+    req.session.user = { username };
+    res.send("Logged in");
+});
+
+
+app.get("/profile", (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send("Not logged in");
+    }
+
+    res.json(req.session.user);
+});
+
+app.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.send("Logged out");
+});
 
 module.exports = app;

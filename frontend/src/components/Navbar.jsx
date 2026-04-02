@@ -1,9 +1,9 @@
-const Navbar = () => {
+function Navbar() {
   return (
-    <div style={{ background: "#222", color: "#fff", padding: "10px" }}>
+    <nav style={{ padding: "10px", background: "#333", color: "#fff" }}>
       <h2>Todo App</h2>
-    </div>
+    </nav>
   );
-};
+}
 
 export default Navbar;
